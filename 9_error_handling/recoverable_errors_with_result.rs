@@ -37,4 +37,27 @@ fn main() {
             panic!("Problem opening the file: {error:?}");
         }
     });
+
+    // Shortcuts for Panic on Error
+    let _file3 = File::open("hello.txt").unwrap();
+    // if Result is Ok then value is retured if Result is err then panic is called
+    let _file4 = File::open("hello.txt").except("hello.txt should be included in the project");
+    // except is same as unwrap just that it lets you write custom panic message
+}
+
+// Propagating Errors
+fn read_username_from_file() -> Result<String, io::Error> {
+    let username_file_result = File::open("hello.txt");
+
+    let mut username_file = match username_file_result {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut username = String::new();
+
+    match username_file.read_to_string(&mut username) {
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
+    }
 }
