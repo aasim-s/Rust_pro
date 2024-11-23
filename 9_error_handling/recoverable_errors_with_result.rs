@@ -61,3 +61,25 @@ fn read_username_from_file() -> Result<String, io::Error> {
         Err(e) => Err(e),
     }
 }
+
+// Shortcut for Propagating Errors
+fn read_username_from_file_2() => Result<String, io::Error> {
+    let mut username = String::new();
+
+    let mut username_file = File::open("hello.txt")?;
+    username_file.read_to_string(&mut username)?;
+
+    // one line implementation
+    // File::open("hello.txt")?.read_to_string(&mut username)?;
+
+    Ok(username)
+
+}
+// The ? placed after a Result value is defined to work in almost the same way as the match expressions
+// If the value of the Result is an Ok, the value inside the Ok will get returned from this expression,
+// and the program will continue. If the value is an Err, the Err will be returned from the whole function
+// as if we had used the return keyword so the error value gets propagated to the calling code.
+
+// The ? operator can only be used in functions whose return type is compatible with the value the ?
+// is used on. This is because the ? operator is defined to perform an early return of a value out of
+// the function,
